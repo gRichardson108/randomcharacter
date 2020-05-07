@@ -10,7 +10,6 @@ import demoncity
 import dice
 import fifth
 import mazerats
-import silent_titans
 import troika
 import trophy
 
@@ -57,11 +56,6 @@ def equipment(system):
     equipment = system().equipment
     return render_template("equipment.html", equipment=equipment)
 
-@app.route('/4d6/')
-def four_dee_six():
-    roll = [sum(sorted(dice.d(6) for _ in xrange(4))[1:]) for _ in range(6)]
-    return render_template("4d6.html", roll=roll)
-
 @app.route('/adventuregame/')
 def make_adventure_game_char():
     return render_template("adventuregame.html", c=adventuregame.Character())
@@ -69,10 +63,6 @@ def make_adventure_game_char():
 @app.route('/dangertime/')
 def make_danger_time_char():
     return render_template("dangertime.html", c=dangertime.Character())
-
-@app.route('/silent-titans/')
-def make_silent_titans_char():
-    return render_template("silent_titans.html", c=silent_titans.Character())
 
 @app.route('/troika/')
 def make_troika_char():
@@ -99,14 +89,6 @@ def make_mazerats_char(number):
         number = 20
     characters = [mazerats.Character() for _ in range(number)]
     return render_template("mazerats.html", characters=characters)
-
-@app.route('/npcs/', defaults={'number': 10})
-@app.route('/npcs/<int:number>/')
-def generate_npcs(number):
-    if number > 1000:
-        number = 1000
-    characters = [character.BasicCharacter(testing=True) for _ in xrange(number)]
-    return render_template("npcs.html", characters=characters)
 
 @app.route('/')
 def index():
